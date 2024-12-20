@@ -1,3 +1,7 @@
+# Ignore all the input and emacs files
+**/input.txt
+**~
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
