@@ -36,19 +36,23 @@ def get_line(c1, c2):
     return line
 
 
-@functools.cache
-def in_shape(coord, line_set):
+# TODO maybe only check if 4 corners are in shape?
+def in_shape(coord, corners, line_set):
     if coord in line_set:
         return True
+
     x, y = coord
     count = 0
-    for move_x in range(x + 1, max_side):
-        if (move_x, y) in line_set:
-            count += 1
-    if count % 2 == 1:
-        return True
-    else:
-        return False
+    n = len(corners)
+
+    for i in range(n):
+        x1, y1 = corners[i]
+        x2, y2 = corners[(i + 1) % n]
+        if x1 == x2:
+            if x1 > x:
+                if min(y1, y2) < y <= max(y1, y2):
+                    count += 1
+    return count % 2 == 1
 
 
 # MAIN
@@ -78,7 +82,7 @@ line_set = frozenset(line_set)
 
 for tup in all_surf:
     surf, coord = tup
-    if surf > 1_396_494_460:
+    if surf > 1_396_494_500:
         continue
 
     print(tup)
@@ -102,7 +106,7 @@ for tup in all_surf:
     valid = True
 
     for curr_coord in surf_line_set:
-        if not in_shape(curr_coord, line_set):
+        if not in_shape(curr_coord, lines, line_set):
             valid = False
             break
 
